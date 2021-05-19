@@ -1,0 +1,20 @@
+{
+    "name": "benjamin/dalkia_dect_tbt",
+    "description": "projet mvc realise dans le cadre de mon stage pour dalkia",
+    "minimum-stability": "stable",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "benjamin",
+            "email": "bongage.benjamin@gmail.com"
+        }
+    ],
+    "require": {
+	    "ext-pdo": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    }
+}
