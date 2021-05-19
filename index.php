@@ -12,9 +12,14 @@
 
     # Switch $action variable. If the action doesn't exist = default case
     switch($action) {
+        # TBT Section
+        case 'tbt':
+            IndexController::getInstance()->setRenderTo('tbt');
+            break;
+
         # DECT Section
         case 'dect':
-            //DectController::getInstance()->setRenderTo('dect');
+            DectController::getInstance()->setRenderTo('dect');
             break;
         
         # Default page if the action is not valid
