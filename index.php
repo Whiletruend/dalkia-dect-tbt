@@ -20,5 +20,5 @@
         default:
             print('default');
             break;
-    }
+    } 
 ?>
