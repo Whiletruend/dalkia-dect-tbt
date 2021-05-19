@@ -13,8 +13,9 @@
     # Switch $action variable. If the action doesn't exist = default case
     switch($action) {
         # DECT Section
-        
-        # TBT Section
+        case 'dect':
+            //DectController::getInstance()->setRenderTo('dect.php');
+            break;
         
         # Default page if the action is not valid
         default:
