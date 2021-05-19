@@ -14,12 +14,12 @@
     switch($action) {
         # DECT Section
         case 'dect':
-            //DectController::getInstance()->setRenderTo('dect.php');
+            //DectController::getInstance()->setRenderTo('dect');
             break;
         
         # Default page if the action is not valid
         default:
-            IndexController::getInstance()->setRenderTo('index.php');
+            IndexController::getInstance()->setRenderTo('index');
             break;
     } 
 ?>

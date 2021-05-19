@@ -21,7 +21,8 @@
 
         public function setRenderTo($view) : void {
             $this->currentPage = $view;
-            include_once('app/view/' . $view);
+            include_once('app/view/header.php');
+            include_once('app/view/' . $view . '.php');
         }
     }
 ?>
