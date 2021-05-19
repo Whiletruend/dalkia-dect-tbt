@@ -18,7 +18,7 @@
         
         # Default page if the action is not valid
         default:
-            print('default');
+            IndexController::getInstance()->setRenderTo('index.php');
             break;
     } 
 ?>
