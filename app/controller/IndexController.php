@@ -4,7 +4,7 @@
 
     # Class 'IndexController'
     class IndexController {
-        # Class Variable
+        # Class Variables
         private static ?object $_instance = null;
         private string $currentPage;
 
@@ -23,6 +23,7 @@
             $this->currentPage = $view;
             include_once('app/view/header.php');
             include_once('app/view/' . $view . '.php');
+            include_once('app/view/footer.php');
         }
     }
 ?>

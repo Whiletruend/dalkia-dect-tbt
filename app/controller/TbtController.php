@@ -2,8 +2,8 @@
     # Requires
     namespace App\controller;
 
-    # Class 'DectController'
-    class DectController {
+    # Class 'TbtController'
+    class TbtController {
         # Class Variables
         private static ?object $_instance = null;
         private string $currentPage;
@@ -13,7 +13,7 @@
         
         public static function getInstance() : object {
             if(is_null(self::$_instance)) {
-                self::$_instance = new DectController;
+                self::$_instance = new TbtController;
             }
 
             return self::$_instance;

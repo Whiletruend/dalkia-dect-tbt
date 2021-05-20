@@ -15,7 +15,7 @@
         # Class Functions
         protected static function getPDO() : object {
             if(is_null(self::$db)) {
-                $connect = new PDO('mysql:host=' . self::$host_DB . ',dbname=' . self::$name_DB . ';charset=utf8', self::$user_DB, self::$pass_DB);
+                $connect = new PDO('mysql:host=' . self::$host_DB . ';dbname=' . self::$name_DB . ';charset=utf8', self::$user_DB, self::$pass_DB);
                 $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
                 self::$db = $connect;

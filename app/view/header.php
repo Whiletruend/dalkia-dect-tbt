@@ -19,7 +19,7 @@
         <!-- Adding Navbar -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
-                <img src="resources/img/dalkia-logo.png" style='width: 3%;'>
+                <img src="resources/img/dalkia-logo.png" style='width: 2.5%;'>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -32,11 +32,17 @@
                     <li class="nav-item">
                         <a class="nav-link <?= $this->currentPage == 'index' ? 'active' : '' ?>" aria-current="page" href=".">Accueil</a>
                     </li>
+
                     <li class="nav-item">
                         <a class="nav-link <?= $this->currentPage == 'dect' ? 'active' : '' ?>" aria-current="page" href="./?action=dect">Gestion DECT</a>
                     </li>
+
                     <li class="nav-item">
                         <a class="nav-link <?= $this->currentPage == 'tbt' ? 'active' : '' ?>" aria-current="page" href="./?action=tbt">Gestion TBT</a>
+                    </li>
+
+                    <li class='nav-item'>
+                        <a class="nav-link <?= ($this->currentPage == 'users_global' or $this->currentPage == 'users_create') ? 'active' : '' ?>" aria-current="page" href="./?action=users_global">Gestion des Utilisateurs</a>
                     </li>
                 </ul>
             </div>
