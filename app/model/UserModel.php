@@ -20,7 +20,7 @@
         }
 
         public static function getAll() : array {
-            $query = self::query('SELECT * FROM UTILISATEURS');
+            $query = self::query('SELECT * FROM `UTILISATEURS`');
             $table = array();
 
             if(!empty($query)) {
@@ -30,6 +30,14 @@
             }
 
             return $table;
+        }
+
+        public static function getByEmbauche($string) : object {
+            $request = self::prepare('SELECT * FROM `UTILISATEURS` WHERE `embauche_UTILISATEUR`=:emb', array(':emb' => $string));
+            
+            if(!empty($request)) {
+                return new User($request[0]['nom_UTILISATEUR'], $request[0]['prenom_UTILISATEUR'], $request[0]['embauche_UTILISATEUR'], $request[0]['ca_UTILISATEUR']);
+            }
         }
     }
 ?>

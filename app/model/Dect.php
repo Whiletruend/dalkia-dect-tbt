@@ -2,13 +2,13 @@
     # Requires
     namespace App\model;
 
-    # Class (object) DECT
-    final class DECT {
+    # Class (object) Dect
+    final class Dect {
         # Object Variables
         private string $appel_DECT;
         private string $type_DECT;
         private string $numserie_DECT;
-        private bool $isDati_DECT;
+        private ?bool $isDati_DECT;
         private string $embauche_UTILISATEUR;
         private string $ca_UTILISATEUR;
 

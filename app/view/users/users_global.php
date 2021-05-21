@@ -2,7 +2,12 @@
     <div class="bg-light border rounded-3 p-3">
         <h2>Vue d'ensemble des utilisateurs</h2>
         <p>Voici une vue d'ensemble de tous vos utilisateurs, vous pouvez effectuer des recherches, des ajouts, des modifications ou bien des suppresions.</p>
-        <?php if($this->msg_type != '') {?>
+        <?php
+
+use App\controller\UserController;
+use App\model\User;
+
+if($this->msg_type != '') {?>
             <div class='p-2'></div>
             <div class="alert alert-<?= $this->msg_type; ?> alert-dismissible fade show" id='users_SEARCH_alert' role="alert">
                 <strong>Erreur !</strong> <?= $this->msg_text; ?>
@@ -53,7 +58,9 @@
                             <td> <?= $val->getPrenom(); ?> </td>
                             <td> <?= $val->getEmbauche(); ?> </td>
                             <td> <?= $val->getCA(); ?> <div class='px-2'></td>
-                            <td><a href='./?action=users_global&emb=<?= $val->getEmbauche(); ?>' class='btn btn-outline-info'><i class='fa fa-info-circle'></i></a></td>
+
+                            <!-- Button that make the informations modal popup -->
+                            <td><a href='<?= UserController::getInstance('')->isSearching($val->getEmbauche()); ?>' class='btn btn-outline-info'><i class='fa fa-info-circle'></i></a></td>
                         </tr>
                     <?php } ?>
                 </tbody>
@@ -62,28 +69,90 @@
     </div>
 </div>
 
+<?php if(isset($_GET['emb'])) { ?>
+    <script type="text/javascript">
+        $(window).on('load', function() {
+            $('#usersInfos_modal').modal('show');
+        });
+    </script>
+<?php } ?>
 
 <!-- Users infos modal -->
-<div class="modal fade" id="users_INFOS_btn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
+<div class="modal fade" tabindex="-1" id='usersInfos_modal' aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
 
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Informations de l'utilisateur <strong>NOM PRENOM</strong></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Informations sur <strong><?= $this->usersList[$_GET['emb']]->getNom(); ?></strong> <strong><?= $this->usersList[$_GET['emb']]->getPrenom(); ?></strong></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
 
-      <div class="modal-body">
-        ...
-      </div>
+            <div class="modal-body">
+                <div class='container'>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <input class="form-control" value="<?= $val->getNom(); ?>" type="text" name='recap_name_BUSINESS' readonly>
+                                <label for="floatingInput">Nom de l'utilisateur</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='p-2'></div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <input class="form-control" value="<?= $val->getPrenom(); ?>" type="text" name='recap_name_BUSINESS' readonly>
+                                <label for="floatingInput">Prénom de l'utilisateur</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='p-2'></div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <input class="form-control" value="<?= $val->getEmbauche(); ?>" type="text" name='recap_name_BUSINESS' readonly>
+                                <label for="floatingInput">Embauche de l'utilisateur</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='p-2'></div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <input class="form-control" value="<?= $val->getCA(); ?>" type="text" name='recap_name_BUSINESS' readonly>
+                                <label for="floatingInput">CA de l'utilisateur</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='p-2'></div>
+                    <style>
+                        .list-group{
+                            max-height: 150px;
+                            margin-bottom: 10px;
+                            overflow:scroll;
+                            -webkit-overflow-scrolling: touch;
+                        }
+                    </style>
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Modifier</button>
-        <button type="button" class="btn btn-primary">OK</button>
-      </div>
+                    <h6>DECT Possédé(s):</h6>
+                    <div class="list-group overflow-auto">
+                        <?php 
+                            $dectList = UserController::getInstance('')->getDectByEmbauche($_GET['emb']);
+                            
+                            foreach($dectList as $key => $val) {
+                                echo '<a href="#" class="list-group-item list-group-item-action">' . $val->getAppel() . '</a>';
+                            }
+                        ?>
+                    </div>
+                </div>
+            </div>
 
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Modifier</button>
+                <button type="button" class="btn btn-primary">OK</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 

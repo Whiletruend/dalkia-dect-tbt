@@ -19,7 +19,7 @@
   </head>
   <!-- Footer -->
   <body class="d-flex flex-column h-100">
-    <footer class="footer mt-auto py-3 bg-dark">
+    <footer class="footer mt-auto py-3 bg-dark sticky">
       <div class="container text-center">
         <span class="text-light">&copy 2021 • <strong>Benjamin BONGAGE</strong> - Gestionnaire de DECT, TBT & UTILISATEURS</span>
       </div>

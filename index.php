@@ -12,16 +12,21 @@
 
     # Switch $action variable. If the action doesn't exist = default case
     switch($action) {
-        # User Section
         case 'users_create':
             UserController::getInstance('')->setRenderTo('users_create');
             break;
-
+        
         case 'users_global':
             if(empty($_GET['searchInfos'])) {
                 UserController::getInstance('')->setRenderTo('users_global');
             } else {
                 UserController::getInstance($_GET['searchInfos'])->setRenderTo('users_global');
+            }
+
+            if(empty($_GET['emb'])) {
+                UserController::getInstance('')->setRenderTo('users_global');
+            } else {
+                UserController::getInstance($_GET['emb'])->setRenderTo('users_global');
             }
             break;
 
