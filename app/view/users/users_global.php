@@ -69,11 +69,13 @@
         <!-- REDIRECTION BASED ON URL PARAMETERS -->
         <?php if(isset($_GET['emb'])) { ?>
             <?php if(!isset($_GET['modification'])) { ?>
-                <script type="text/javascript">
-                    $(window).on('load', function() {
-                        $('#usersInfos_modal').modal('show');
-                    });
-                </script>
+                <?php if(!isset($_GET['confirmDelete'])) { ?>
+                    <script type="text/javascript">
+                        $(window).on('load', function() {
+                            $('#usersInfos_modal').modal('show');
+                        });
+                    </script>
+                <?php } ?>
             <?php } ?>
         <?php } ?>
 
@@ -82,8 +84,14 @@
                 $(window).on('load', function() {
                     $('#usersModifs_modal').modal('show');
                 });
-
-                document.getElementById('usersInfos_modal').style.display='block';
+            </script>
+        <?php } ?>
+        
+        <?php if(isset($_GET['confirmDelete'])) { ?>
+            <script type="text/javascript">
+                $(window).on('load', function() {
+                    $('#usersCheckDelete_modal').modal('show');
+                });
             </script>
         <?php } ?> 
     
@@ -189,8 +197,8 @@
         </div>
 
 
-        <!-- Users modif modal -->
-        <div class="modal fade" tabindex="-1" id='usersModifs_modal' aria-hidden="true">
+         <!-- Users infos modal -->
+         <div class="modal fade" tabindex="-1" id='usersModifs_modal' aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -201,7 +209,7 @@
 
                     <?php
                         $user = UserController::getInstance('')->getUserByEmb($_GET['emb']);
-                    ?>
+                    ?>  
 
                     <form method='POST'>
                         <div class="modal-body">
@@ -241,50 +249,44 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class='p-2'></div>
-                                <style>
-                                    .list-group{
-                                        max-height: 150px;
-                                        margin-bottom: 10px;
-                                        overflow:scroll;
-                                        -webkit-overflow-scrolling: touch;
-                                    }
-                                </style>
+                            </div>
+                        </div>
+                    
+                    
+                        <div class="modal-footer">
+                            <a href="<?= UserController::getInstance('')->isSearching($user->getEmbauche()); ?>" dismiss='modal' class='btn btn-outline-secondary'>Retour</a>
+                            <button type='submit' class='btn btn-primary'>Valider les changements</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
-                                <?php
-                                    $dectList = UserController::getInstance('')->getDectByEmbauche($_GET['emb']);
-                                    $count = 0;
 
-                                    foreach($dectList as $key => $val) {
-                                        $count = $count + 1;
-                                    }
-                                ?>
+        <!-- Users delete check -->
+        <div class="modal fade" tabindex="-1" id='usersCheckDelete_modal' data-bs-backdrop="static" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <!-- Le PHP fait bug l'affichage du Footer. A régler !! -->
+                        <h5 class="modal-title" id="exampleModalLabel">Êtes-vous sûr de vouloir <strong>supprimer</strong> l'utilisateur ?</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
 
-                                <?php if($count == 0) { ?>
-                                    <h6 class='text-danger'>Cet utilisateur ne possède pas de DECT.</h6>
-                                <?php } elseif($count > 1) { ?>
-                                    <h6>DECT Possédés (<?= $count; ?>):</h6>
-                                <?php } else { ?>
-                                    <h6>DECT Possédé:</h6>
-                                <?php } ?>
-
-                                <div class="list-group overflow-auto">
-                                    <?php 
-                                        $dectList = UserController::getInstance('')->getDectByEmbauche($_GET['emb']);
-
-                                        foreach($dectList as $key => $val) {
-                                            $count = $count + 1;
-                                            echo '<a href="./?action=dect&numappel=' . $val->getAppel() . '" class="list-group-item list-group-item-action">' . $val->getAppel() . '</a>';
-                                        }
-                                    ?>
+                    <div class="modal-body">
+                        <div class='container'>
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6>Supprimer un utilisateur est <strong>définitif</strong> et aucun retour en arrière ne sera possible !</h6>
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Retour</button>
-                            <button type="submit" class="btn btn-primary">Valider</button>
-                        </div>
-                    </form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <a href='<?= UserController::getInstance('')->isSearching($user->getEmbauche()); ?>' class="btn btn-outline-secondary">Retour</a>
+                        <a href='./?action=user_delete&emb=<?= $user->getEmbauche(); ?>' class="btn btn-danger">J'en suis sûr</a>
+                    </div>
                 </div>
             </div>
         </div>

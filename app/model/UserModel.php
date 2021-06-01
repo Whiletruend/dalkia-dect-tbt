@@ -44,8 +44,17 @@
             $request = self::request('INSERT INTO `UTILISATEURS` VALUES (:lastname, :firstname, :emb, :ca)', array(':lastname' => $lastname, ':firstname' => $firstname, ':emb' => $emb, ':ca' => $ca));
         }
 
-        public static function modifyUser($lastname, $firstname, $emb, $ca) : void {
-            $request = self::request('UPDATE `UTILISATEURS` SET nom_UTILISATEUR = :lastname, prenom_UTILISATEUR = :firstname, embauche_UTILISATEUR = :emb, ca_UTILISATEUR = :emb WHERE embauche_UTILISATEUR = :emb', array(':lastname' => $lastname, ':firstname' => $firstname, ':emb' => $emb, ':ca' => $ca));
+        public static function deleteUser($emb) : void {
+            $request = self::request('DELETE FROM `UTILISATEURS` WHERE embauche_UTILISATEUR = :emb', array(':emb' => $emb));
+        }
+
+        public static function modifyUser($lastname, $firstname, $emb, $ca, $infosTable) : void {
+            if($infosTable['embChanged']) {
+                $first_request = self::deleteUser($infosTable['oldEmb']);
+                $second_request = self::addUser($lastname, $firstname, $emb, $ca);
+            } else {
+                $request = self::request('UPDATE `UTILISATEURS` SET nom_UTILISATEUR = :lastname, prenom_UTILISATEUR = :firstname, embauche_UTILISATEUR = :emb, ca_UTILISATEUR = :ca WHERE embauche_UTILISATEUR = :emb', array(':lastname' => $lastname, ':firstname' => $firstname, ':emb' => $emb, ':ca' => $ca));
+            }
         }
     }
 ?>

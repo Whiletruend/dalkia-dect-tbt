@@ -12,6 +12,10 @@
 
     # Switch $action variable. If the action doesn't exist = default case
     switch($action) {
+        case 'user_delete':
+            UserController::getInstance('')->userCheckDelete($_GET['emb']);
+            break;
+
         case 'users_create':
             UserController::getInstance('')->setRenderTo('users_create');
             break;

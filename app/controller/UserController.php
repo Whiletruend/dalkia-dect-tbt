@@ -55,6 +55,9 @@
                 $ca = strtoupper($_POST['ca_UTILISATEUR__add']);
 
                 UserModel::addUser($nom, $prenom, $embauche, $ca);
+
+                // Redirect to global page
+                header('Location: ./?action=users_global');
             }
         }
 
@@ -65,9 +68,28 @@
                 $prenom = ucfirst($prenom); # And I just capitalize it
                 $embauche = strtoupper($_POST['embauche_UTILISATEUR__update']);
                 $ca = strtoupper($_POST['ca_UTILISATEUR__update']);
+                $old_emb = $_GET['emb'];
 
-                UserModel::modifyUser($nom, $prenom, $embauche, $ca);
+                // Setup the 'infosTable'
+                $infosTable = array('embChanged' => false, 'oldEmb' => $old_emb);
+
+                // Check if the user changed the 'embauche', if yes then the boolean turn to true. Else it stay to false.
+                $userObj = UserModel::getByEmbauche($infosTable['oldEmb']);
+                if($userObj->getEmbauche() != $embauche) { $infosTable['embChanged'] = true; }
+
+                UserModel::modifyUser($nom, $prenom, $embauche, $ca, $infosTable);
+
+                // Refresh the page
+                header('Location: ./?action=users_global&searchInfos=' . $nom);
             }
+        }
+
+        public function userCheckDelete($emb) : void {
+            // delete the user
+            UserModel::deleteUser($emb);
+
+            // Redirect
+            header('Location: ./?action=users_global');
         }
 
         public function getDectByEmbauche(?string $emb) : array {
