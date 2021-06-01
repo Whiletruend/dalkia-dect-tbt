@@ -3,26 +3,25 @@
         <h2>Vue d'ensemble des utilisateurs</h2>
         <p>Voici une vue d'ensemble de tous vos utilisateurs, vous pouvez effectuer des recherches, des ajouts, des modifications ou bien des suppresions.</p>
         <?php
+            use App\controller\UserController;
 
-use App\controller\UserController;
-use App\model\User;
+            if($this->msg_type != '') {
+        ?>
+                <div class='p-2'></div>
+                <div class="alert alert-<?= $this->msg_type; ?> alert-dismissible fade show" id='users_SEARCH_alert' role="alert">
+                    <strong>Erreur !</strong> <?= $this->msg_text; ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
 
-if($this->msg_type != '') {?>
-            <div class='p-2'></div>
-            <div class="alert alert-<?= $this->msg_type; ?> alert-dismissible fade show" id='users_SEARCH_alert' role="alert">
-                <strong>Erreur !</strong> <?= $this->msg_text; ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-
-            <script>
-                $("#users_SEARCH_alert").fadeTo(2000, 500).slideUp(500, function(){
-                    $("#users_SEARCH_alert").slideUp(500);
-                    window.location.replace("./?action=users_global");
-                });
-            </script>
-        <?php } ?>
+                <script>
+                    $("#users_SEARCH_alert").fadeTo(2000, 500).slideUp(500, function(){
+                        $("#users_SEARCH_alert").slideUp(500);
+                        window.location.replace("./?action=users_global");
+                    });
+                </script>
+            <?php } ?>
         <div class='p-2'></div> 
-
+        
         <!-- Search bar -->
         <div>
             <form method='POST'>
@@ -34,7 +33,7 @@ if($this->msg_type != '') {?>
         </div>
 
         <div class='p-2'></div> <!-- Spacer -->
-
+        
         <!-- Users tables -->
         <div>
             <table class="table table-hover align-middle" style='text-align: center;'>
@@ -66,90 +65,227 @@ if($this->msg_type != '') {?>
                 </tbody>
             </table>
         </div>
-    </div>
-</div>
+        
+        <!-- REDIRECTION BASED ON URL PARAMETERS -->
+        <?php if(isset($_GET['emb'])) { ?>
+            <?php if(!isset($_GET['modification'])) { ?>
+                <script type="text/javascript">
+                    $(window).on('load', function() {
+                        $('#usersInfos_modal').modal('show');
+                    });
+                </script>
+            <?php } ?>
+        <?php } ?>
 
-<?php if(isset($_GET['emb'])) { ?>
-    <script type="text/javascript">
-        $(window).on('load', function() {
-            $('#usersInfos_modal').modal('show');
-        });
-    </script>
-<?php } ?>
+        <?php if(isset($_GET['modification'])) { ?>
+            <script type="text/javascript">
+                $(window).on('load', function() {
+                    $('#usersModifs_modal').modal('show');
+                });
 
-<!-- Users infos modal -->
-<div class="modal fade" tabindex="-1" id='usersInfos_modal' aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
+                document.getElementById('usersInfos_modal').style.display='block';
+            </script>
+        <?php } ?> 
+    
 
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Informations sur <strong><?= $this->usersList[$_GET['emb']]->getNom(); ?></strong> <strong><?= $this->usersList[$_GET['emb']]->getPrenom(); ?></strong></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
+        <!-- Users infos modal -->
+        <div class="modal fade" tabindex="-1" id='usersInfos_modal' aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <!-- Le PHP fait bug l'affichage du Footer. A régler !! -->
+                        <h5 class="modal-title" id="exampleModalLabel">Informations sur <strong><?= "l'utilisateur"; //$this->usersList[$_GET['emb']]->getNom(); ?></strong> <strong><?= ''; //$this->usersList[$_GET['emb']]->getPrenom(); ?></strong></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
 
-            <div class="modal-body">
-                <div class='container'>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="form-floating">
-                                <input class="form-control" value="<?= $val->getNom(); ?>" type="text" name='recap_name_BUSINESS' readonly>
-                                <label for="floatingInput">Nom de l'utilisateur</label>
+                    <?php
+                        $user = UserController::getInstance('')->getUserByEmb($_GET['emb']);
+                    ?>  
+
+                    <div class="modal-body">
+                        <div class='container'>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <input class="form-control" value="<?= $user->getNom(); ?>" type="text" name='recap_name_BUSINESS' readonly>
+                                        <label for="floatingInput">Nom de l'utilisateur</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='p-2'></div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <input class="form-control" value="<?= $user->getPrenom(); ?>" type="text" name='recap_name_BUSINESS' readonly>
+                                        <label for="floatingInput">Prénom de l'utilisateur</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='p-2'></div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <input class="form-control" value="<?= $user->getEmbauche(); ?>" type="text" name='recap_name_BUSINESS' readonly>
+                                        <label for="floatingInput">Embauche de l'utilisateur</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='p-2'></div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <input class="form-control" value="<?= $user->getCA(); ?>" type="text" name='recap_name_BUSINESS' readonly>
+                                        <label for="floatingInput">CA de l'utilisateur</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='p-2'></div>
+                            <style>
+                                .list-group{
+                                    max-height: 150px;
+                                    margin-bottom: 10px;
+                                    overflow:scroll;
+                                    -webkit-overflow-scrolling: touch;
+                                }
+                            </style>
+
+                            <?php
+                                $dectList = UserController::getInstance('')->getDectByEmbauche($_GET['emb']);
+                                $count = 0;
+
+                                foreach($dectList as $key => $val) {
+                                    $count = $count + 1;
+                                }
+                            ?>
+
+                            <?php if($count == 0) { ?>
+                                <h6 class='text-danger'>Cet utilisateur ne possède pas de DECT.</h6>
+                            <?php } elseif($count > 1) { ?>
+                                <h6>DECT Possédés (<?= $count; ?>):</h6>
+                            <?php } else { ?>
+                                <h6>DECT Possédé:</h6>
+                            <?php } ?>
+
+                            <div class="list-group overflow-auto">
+                                <?php 
+                                    $dectList = UserController::getInstance('')->getDectByEmbauche($_GET['emb']);
+
+                                    foreach($dectList as $key => $val) {
+                                        $count = $count + 1;
+                                        echo '<a href="./?action=dect&numappel=' . $val->getAppel() . '" class="list-group-item list-group-item-action">' . $val->getAppel() . '</a>';
+                                    }
+                                ?>
                             </div>
                         </div>
                     </div>
-                    <div class='p-2'></div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="form-floating">
-                                <input class="form-control" value="<?= $val->getPrenom(); ?>" type="text" name='recap_name_BUSINESS' readonly>
-                                <label for="floatingInput">Prénom de l'utilisateur</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class='p-2'></div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="form-floating">
-                                <input class="form-control" value="<?= $val->getEmbauche(); ?>" type="text" name='recap_name_BUSINESS' readonly>
-                                <label for="floatingInput">Embauche de l'utilisateur</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class='p-2'></div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="form-floating">
-                                <input class="form-control" value="<?= $val->getCA(); ?>" type="text" name='recap_name_BUSINESS' readonly>
-                                <label for="floatingInput">CA de l'utilisateur</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class='p-2'></div>
-                    <style>
-                        .list-group{
-                            max-height: 150px;
-                            margin-bottom: 10px;
-                            overflow:scroll;
-                            -webkit-overflow-scrolling: touch;
-                        }
-                    </style>
-
-                    <h6>DECT Possédé(s):</h6>
-                    <div class="list-group overflow-auto">
-                        <?php 
-                            $dectList = UserController::getInstance('')->getDectByEmbauche($_GET['emb']);
-                            
-                            foreach($dectList as $key => $val) {
-                                echo '<a href="#" class="list-group-item list-group-item-action">' . $val->getAppel() . '</a>';
-                            }
-                        ?>
+                    
+                    <div class="modal-footer">
+                        <a href="<?= UserController::getInstance('')->isSearching($user->getEmbauche()) . '&confirmDelete'; ?>" dismiss='modal' class='btn btn-outline-danger mr-auto'>Supprimer</a>
+                        <a href="<?= UserController::getInstance('')->isSearching($user->getEmbauche()) . '&modification'; ?>" class='btn btn-outline-secondary'>Modifier</a>
+                        <button type='button' class='btn btn-primary'>OK</button>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Modifier</button>
-                <button type="button" class="btn btn-primary">OK</button>
+
+        <!-- Users modif modal -->
+        <div class="modal fade" tabindex="-1" id='usersModifs_modal' aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <!-- Le PHP fait bug l'affichage du Footer. A régler !! -->
+                        <h5 class="modal-title" id="exampleModalLabel">Informations sur <strong><?= "l'utilisateur"; //$this->usersList[$_GET['emb']]->getNom(); ?></strong> <strong><?= ''; //$this->usersList[$_GET['emb']]->getPrenom(); ?></strong></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <?php
+                        $user = UserController::getInstance('')->getUserByEmb($_GET['emb']);
+                    ?>
+
+                    <form method='POST'>
+                        <div class="modal-body">
+                            <div class='container'>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-floating">
+                                            <input class="form-control" value="<?= $user->getNom(); ?>" type="text" name='nom_UTILISATEUR__update'>
+                                            <label for="floatingInput">Nom de l'utilisateur</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class='p-2'></div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-floating">
+                                            <input class="form-control" value="<?= $user->getPrenom(); ?>" type="text" name='prenom_UTILISATEUR__update'>
+                                            <label for="floatingInput">Prénom de l'utilisateur</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class='p-2'></div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-floating">
+                                            <input class="form-control" value="<?= $user->getEmbauche(); ?>" type="text" name='embauche_UTILISATEUR__update'>
+                                            <label for="floatingInput">Embauche de l'utilisateur</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class='p-2'></div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-floating">
+                                            <input class="form-control" value="<?= $user->getCA(); ?>" type="text" name='ca_UTILISATEUR__update'>
+                                            <label for="floatingInput">CA de l'utilisateur</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class='p-2'></div>
+                                <style>
+                                    .list-group{
+                                        max-height: 150px;
+                                        margin-bottom: 10px;
+                                        overflow:scroll;
+                                        -webkit-overflow-scrolling: touch;
+                                    }
+                                </style>
+
+                                <?php
+                                    $dectList = UserController::getInstance('')->getDectByEmbauche($_GET['emb']);
+                                    $count = 0;
+
+                                    foreach($dectList as $key => $val) {
+                                        $count = $count + 1;
+                                    }
+                                ?>
+
+                                <?php if($count == 0) { ?>
+                                    <h6 class='text-danger'>Cet utilisateur ne possède pas de DECT.</h6>
+                                <?php } elseif($count > 1) { ?>
+                                    <h6>DECT Possédés (<?= $count; ?>):</h6>
+                                <?php } else { ?>
+                                    <h6>DECT Possédé:</h6>
+                                <?php } ?>
+
+                                <div class="list-group overflow-auto">
+                                    <?php 
+                                        $dectList = UserController::getInstance('')->getDectByEmbauche($_GET['emb']);
+
+                                        foreach($dectList as $key => $val) {
+                                            $count = $count + 1;
+                                            echo '<a href="./?action=dect&numappel=' . $val->getAppel() . '" class="list-group-item list-group-item-action">' . $val->getAppel() . '</a>';
+                                        }
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Retour</button>
+                            <button type="submit" class="btn btn-primary">Valider</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

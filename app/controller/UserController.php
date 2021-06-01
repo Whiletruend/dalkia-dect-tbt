@@ -17,9 +17,10 @@
 
         # Class Functions
         private function __construct(?string $searchInfos) {
+            # Showing the 5 firsts users.
             if(empty($searchInfos))  {
                 $this->dectList = array();
-                $table = UserModel::customRequest('SELECT * FROM `UTILISATEURS` ORDER BY nom_UTILISATEUR ASC LIMIT 8;');
+                $table = UserModel::customRequest('SELECT * FROM `UTILISATEURS` ORDER BY nom_UTILISATEUR ASC LIMIT 5;');
             } else {
                 $this->dectList = array();
                 $table = UserModel::customRequest('SELECT * FROM `UTILISATEURS` WHERE nom_UTILISATEUR LIKE "%' . $searchInfos . '%" OR embauche_UTILISATEUR LIKE "%' . $searchInfos . '%" ORDER BY nom_UTILISATEUR ASC;');
@@ -30,14 +31,42 @@
                 }
             }
             
+            # Set the class table usersList to the $table variable
             $this->usersList = $table;
 
+            # Starts primal functions
             $this->usersSearch();
+            $this->userCheckAdd();
+            $this->userCheckModify();
         }
 
         private function usersSearch() : void {
             if(isset($_POST['users_SEARCH'])) {
                 header('Location: ?action=users_global&searchInfos=' . $_POST['users_SEARCH']);
+            }
+        }
+
+        private function userCheckAdd() : void {
+            if(isset($_POST['nom_UTILISATEUR__add']) && isset($_POST['prenom_UTILISATEUR__add']) && isset($_POST['embauche_UTILISATEUR__add']) && isset($_POST['ca_UTILISATEUR__add'])) {
+                $nom = strtoupper($_POST['nom_UTILISATEUR__add']);
+                $prenom = strtolower($_POST['prenom_UTILISATEUR__add']); # I turn the text into a lowercase
+                $prenom = ucfirst($prenom); # And I just capitalize it
+                $embauche = strtoupper($_POST['embauche_UTILISATEUR__add']);
+                $ca = strtoupper($_POST['ca_UTILISATEUR__add']);
+
+                UserModel::addUser($nom, $prenom, $embauche, $ca);
+            }
+        }
+
+        private function userCheckModify() : void {
+            if(isset($_POST['nom_UTILISATEUR__update']) && isset($_POST['prenom_UTILISATEUR__update']) && isset($_POST['embauche_UTILISATEUR__update']) && isset($_POST['ca_UTILISATEUR__update'])) {
+                $nom = strtoupper($_POST['nom_UTILISATEUR__update']);
+                $prenom = strtolower($_POST['prenom_UTILISATEUR__update']); # I turn the text into a lowercase
+                $prenom = ucfirst($prenom); # And I just capitalize it
+                $embauche = strtoupper($_POST['embauche_UTILISATEUR__update']);
+                $ca = strtoupper($_POST['ca_UTILISATEUR__update']);
+
+                UserModel::modifyUser($nom, $prenom, $embauche, $ca);
             }
         }
 
