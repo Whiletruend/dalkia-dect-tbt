@@ -57,6 +57,8 @@
                 UserModel::addUser($nom, $prenom, $embauche, $ca);
 
                 // Redirect to global page
+                $this->msg_type = 'info';
+                $this->msg_text = "L'utilisateur a été modifié avec succès !";
                 header('Location: ./?action=users_global');
             }
         }
@@ -81,6 +83,9 @@
 
                 // Refresh the page
                 header('Location: ./?action=users_global&searchInfos=' . $nom);
+
+                $this->msg_type = 'info';
+                $this->msg_text = "L'utilisateur a été modifié avec succès !";
             }
         }
 
@@ -92,10 +97,12 @@
             header('Location: ./?action=users_global');
         }
 
-        public function getDectByEmbauche(?string $emb) : array {
-            $dectList = DectModel::getByEmbauche($emb);
-
-            return $dectList;
+        public function getDectByEmbauche(string $emb) : array {
+            if(isset($emb)) {
+                $dectList = DectModel::getByEmbauche('array', $emb);
+   
+                return $dectList;
+            }
         }
 
         public function isSearching(string $emb) : string {
@@ -111,7 +118,7 @@
             return $location;
         }
 
-        public function getUserByEmb($emb) : object {
+        public function getUserByEmb(string $emb) : object {
             if(isset($emb)) {
                 $user = UserModel::getByEmbauche($emb);
 

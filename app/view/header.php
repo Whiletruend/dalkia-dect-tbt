@@ -34,7 +34,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link <?= $this->currentPage == 'dect' ? 'active' : '' ?>" aria-current="page" href="./?action=dect">Gestion DECT</a>
+                        <a class="nav-link <?= $this->currentPage == 'dect_global' ? 'active' : '' ?>" aria-current="page" href="./?action=dect_global">Gestion DECT</a>
                     </li>
 
                     <li class="nav-item">

@@ -32,7 +32,7 @@
             return $table;
         }
 
-        public static function getByEmbauche($string) : object {
+        public static function getByEmbauche($string) : ?object {
             $request = self::prepare('SELECT * FROM `UTILISATEURS` WHERE `embauche_UTILISATEUR`=:emb', array(':emb' => $string));
             
             if(!empty($request)) {

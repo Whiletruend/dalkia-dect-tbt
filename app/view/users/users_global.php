@@ -9,7 +9,7 @@
         ?>
                 <div class='p-2'></div>
                 <div class="alert alert-<?= $this->msg_type; ?> alert-dismissible fade show" id='users_SEARCH_alert' role="alert">
-                    <strong>Erreur !</strong> <?= $this->msg_text; ?>
+                    <strong>Message !</strong> <?= $this->msg_text; ?>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
 
@@ -68,7 +68,7 @@
         
         <!-- REDIRECTION BASED ON URL PARAMETERS -->
         <?php if(isset($_GET['emb'])) { ?>
-            <?php if(!isset($_GET['modification'])) { ?>
+            <?php if(!isset($_GET['users_modifications'])) { ?>
                 <?php if(!isset($_GET['confirmDelete'])) { ?>
                     <script type="text/javascript">
                         $(window).on('load', function() {
@@ -79,7 +79,7 @@
             <?php } ?>
         <?php } ?>
 
-        <?php if(isset($_GET['modification'])) { ?>
+        <?php if(isset($_GET['users_modifications'])) { ?>
             <script type="text/javascript">
                 $(window).on('load', function() {
                     $('#usersModifs_modal').modal('show');
@@ -158,29 +158,28 @@
                             </style>
 
                             <?php
-                                $dectList = UserController::getInstance('')->getDectByEmbauche($_GET['emb']);
-                                $count = 0;
+                                $dect_List = UserController::getInstance('')->getDectByEmbauche($_GET['emb']);
+                                $dect_Count = 0;
 
-                                foreach($dectList as $key => $val) {
-                                    $count = $count + 1;
+                                foreach($dect_List as $key => $val) {
+                                    $dect_Count = $dect_Count + 1;
+                                }
+
+                                if($dect_Count == 0) {
+                                    echo "<h6 class='text-danger'>Cet utilisateur ne possède pas de DECT.</h6>";
+                                } elseif($dect_Count > 1) {
+                                    echo "<h6>DECT Possédés ($dect_Count):</h6>";
+                                } else {
+                                    echo "<h6>DECT Possédé:</h6>";
                                 }
                             ?>
 
-                            <?php if($count == 0) { ?>
-                                <h6 class='text-danger'>Cet utilisateur ne possède pas de DECT.</h6>
-                            <?php } elseif($count > 1) { ?>
-                                <h6>DECT Possédés (<?= $count; ?>):</h6>
-                            <?php } else { ?>
-                                <h6>DECT Possédé:</h6>
-                            <?php } ?>
-
-                            <div class="list-group overflow-auto">
+                            <div class='list-group overflow-auto'>
                                 <?php 
-                                    $dectList = UserController::getInstance('')->getDectByEmbauche($_GET['emb']);
+                                    $dect_List = UserController::getInstance('')->getDectByEmbauche($_GET['emb']);
 
-                                    foreach($dectList as $key => $val) {
-                                        $count = $count + 1;
-                                        echo '<a href="./?action=dect&numappel=' . $val->getAppel() . '" class="list-group-item list-group-item-action">' . $val->getAppel() . '</a>';
+                                    foreach($dect_List as $key => $val) {
+                                        echo '<a href="./?action=dect_global&numserie=' . $val->getNumSerie() . '" class="list-group-item list-group-item-action">' . $val->getAppel() . '</a>';
                                     }
                                 ?>
                             </div>
@@ -189,7 +188,7 @@
                     
                     <div class="modal-footer">
                         <a href="<?= UserController::getInstance('')->isSearching($user->getEmbauche()) . '&confirmDelete'; ?>" dismiss='modal' class='btn btn-outline-danger mr-auto'>Supprimer</a>
-                        <a href="<?= UserController::getInstance('')->isSearching($user->getEmbauche()) . '&modification'; ?>" class='btn btn-outline-secondary'>Modifier</a>
+                        <a href="<?= UserController::getInstance('')->isSearching($user->getEmbauche()) . '&users_modifications'; ?>" class='btn btn-outline-secondary'>Modifier</a>
                         <button type='button' class='btn btn-primary'>OK</button>
                     </div>
                 </div>

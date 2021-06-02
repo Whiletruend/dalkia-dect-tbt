@@ -34,7 +34,7 @@
             return $this->numserie_DECT;
         }
 
-        public function getIsDati() : bool {
+        public function getIsDati() : ?bool {
             return $this->isDati_DECT;
         }
 

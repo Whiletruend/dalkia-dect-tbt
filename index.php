@@ -40,8 +40,19 @@
             break;
 
         # DECT Section
-        case 'dect':
-            DectController::getInstance()->setRenderTo('dect');
+        case 'dect_global':
+            if(empty($_GET['searchInfos'])) {
+                DectController::getInstance('')->setRenderTo('dect_global');
+            } else {
+                DectController::getInstance($_GET['searchInfos'])->setRenderTo('dect_global');
+            }
+
+            if(empty($_GET['emb'])) {
+                DectController::getInstance('')->setRenderTo('dect_global');
+            } else {
+                DectController::getInstance($_GET['emb'])->setRenderTo('dect_global');
+            }
+        
             break;
         
         # Default page if the action is not valid
