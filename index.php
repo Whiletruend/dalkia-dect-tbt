@@ -40,6 +40,14 @@
             break;
 
         # DECT Section
+        case 'dect_delete':
+            DectController::getInstance('')->dectCheckDelete($_GET['numserie']);
+            break;
+
+        case 'dect_create':
+            DectController::getInstance('')->setRenderTo('dect_create');
+            break;
+
         case 'dect_global':
             if(empty($_GET['searchInfos'])) {
                 DectController::getInstance('')->setRenderTo('dect_global');

@@ -1,8 +1,8 @@
 <?php
     # Requires
     namespace App\controller;
-    use App\model\UserModel;
-    use App\model\DectModel;
+    use App\model\UserAccess;
+    use App\model\DectAccess;
 
     # Class 'UserController'
     class UserController {
@@ -20,10 +20,10 @@
             # Showing the 5 firsts users.
             if(empty($searchInfos))  {
                 $this->dectList = array();
-                $table = UserModel::customRequest('SELECT * FROM `UTILISATEURS` ORDER BY nom_UTILISATEUR ASC LIMIT 5;');
+                $table = UserAccess::customRequest('SELECT * FROM `UTILISATEURS` ORDER BY nom_UTILISATEUR ASC LIMIT 5;');
             } else {
                 $this->dectList = array();
-                $table = UserModel::customRequest('SELECT * FROM `UTILISATEURS` WHERE nom_UTILISATEUR LIKE "%' . $searchInfos . '%" OR embauche_UTILISATEUR LIKE "%' . $searchInfos . '%" ORDER BY nom_UTILISATEUR ASC;');
+                $table = UserAccess::customRequest('SELECT * FROM `UTILISATEURS` WHERE nom_UTILISATEUR LIKE "%' . $searchInfos . '%" OR embauche_UTILISATEUR LIKE "%' . $searchInfos . '%" ORDER BY nom_UTILISATEUR ASC;');
                
                 if(empty($table)) {
                     $this->msg_type = 'danger';
@@ -54,7 +54,7 @@
                 $embauche = strtoupper($_POST['embauche_UTILISATEUR__add']);
                 $ca = strtoupper($_POST['ca_UTILISATEUR__add']);
 
-                UserModel::addUser($nom, $prenom, $embauche, $ca);
+                UserAccess::addUser($nom, $prenom, $embauche, $ca);
 
                 // Redirect to global page
                 $this->msg_type = 'info';
@@ -76,10 +76,10 @@
                 $infosTable = array('embChanged' => false, 'oldEmb' => $old_emb);
 
                 // Check if the user changed the 'embauche', if yes then the boolean turn to true. Else it stay to false.
-                $userObj = UserModel::getByEmbauche($infosTable['oldEmb']);
+                $userObj = UserAccess::getByEmbauche($infosTable['oldEmb']);
                 if($userObj->getEmbauche() != $embauche) { $infosTable['embChanged'] = true; }
 
-                UserModel::modifyUser($nom, $prenom, $embauche, $ca, $infosTable);
+                UserAccess::modifyUser($nom, $prenom, $embauche, $ca, $infosTable);
 
                 // Refresh the page
                 header('Location: ./?action=users_global&searchInfos=' . $nom);
@@ -91,7 +91,7 @@
 
         public function userCheckDelete($emb) : void {
             // delete the user
-            UserModel::deleteUser($emb);
+            UserAccess::deleteUser($emb);
 
             // Redirect
             header('Location: ./?action=users_global');
@@ -99,7 +99,7 @@
 
         public function getDectByEmbauche(string $emb) : array {
             if(isset($emb)) {
-                $dectList = DectModel::getByEmbauche('array', $emb);
+                $dectList = DectAccess::getByEmbauche('array', $emb);
    
                 return $dectList;
             }
@@ -120,7 +120,7 @@
 
         public function getUserByEmb(string $emb) : object {
             if(isset($emb)) {
-                $user = UserModel::getByEmbauche($emb);
+                $user = UserAccess::getByEmbauche($emb);
 
                 return $user;
             }

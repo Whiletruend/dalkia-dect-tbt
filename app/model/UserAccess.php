@@ -3,8 +3,8 @@
     namespace App\model;
     use PDO;
 
-    # Class 'UserModel'
-    class UserModel extends Database {
+    # Class 'UserAccess'
+    class UserAccess extends Database {
         # Class Functions
         public static function customRequest($request) : array {
             $query = self::query($request);

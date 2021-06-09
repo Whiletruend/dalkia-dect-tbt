@@ -69,7 +69,7 @@
         <!-- REDIRECTION BASED ON URL PARAMETERS -->
         <?php if(isset($_GET['emb'])) { ?>
             <?php if(!isset($_GET['users_modifications'])) { ?>
-                <?php if(!isset($_GET['confirmDelete'])) { ?>
+                <?php if(!isset($_GET['users_confirmDelete'])) { ?>
                     <script type="text/javascript">
                         $(window).on('load', function() {
                             $('#usersInfos_modal').modal('show');
@@ -87,7 +87,7 @@
             </script>
         <?php } ?>
         
-        <?php if(isset($_GET['confirmDelete'])) { ?>
+        <?php if(isset($_GET['users_confirmDelete'])) { ?>
             <script type="text/javascript">
                 $(window).on('load', function() {
                     $('#usersCheckDelete_modal').modal('show');
@@ -179,7 +179,7 @@
                                     $dect_List = UserController::getInstance('')->getDectByEmbauche($_GET['emb']);
 
                                     foreach($dect_List as $key => $val) {
-                                        echo '<a href="./?action=dect_global&numserie=' . $val->getNumSerie() . '" class="list-group-item list-group-item-action">' . $val->getAppel() . '</a>';
+                                        echo '<a href="./?action=dect_global&searchInfos=' . $val->getAppel() . '&emb=' . $_GET['emb'] . '&numserie=' . $val->getNumSerie() . '" class="list-group-item list-group-item-action">' . $val->getAppel() . '</a>';
                                     }
                                 ?>
                             </div>
@@ -187,7 +187,7 @@
                     </div>
                     
                     <div class="modal-footer">
-                        <a href="<?= UserController::getInstance('')->isSearching($user->getEmbauche()) . '&confirmDelete'; ?>" dismiss='modal' class='btn btn-outline-danger mr-auto'>Supprimer</a>
+                        <a href="<?= UserController::getInstance('')->isSearching($user->getEmbauche()) . '&users_confirmDelete'; ?>" dismiss='modal' class='btn btn-outline-danger mr-auto'>Supprimer</a>
                         <a href="<?= UserController::getInstance('')->isSearching($user->getEmbauche()) . '&users_modifications'; ?>" class='btn btn-outline-secondary'>Modifier</a>
                         <button type='button' class='btn btn-primary'>OK</button>
                     </div>
@@ -268,7 +268,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <!-- Le PHP fait bug l'affichage du Footer. A régler !! -->
-                        <h5 class="modal-title" id="exampleModalLabel">Êtes-vous sûr de vouloir <strong>supprimer</strong> l'utilisateur ?</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Êtes-vous sûr de vouloir <strong>supprimer</strong> le DECT ?</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
