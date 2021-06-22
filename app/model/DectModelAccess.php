@@ -31,5 +31,18 @@
 
             return $table;
         }
+
+        public static function getByID($string) : array {
+            $request = self::prepare('SELECT * FROM `DECT_MODELES` WHERE `id`=:id', array(':id' => $string));
+            $table = array();
+
+            if(!empty($request)) {
+                foreach($request as $rows) {
+                    $table[$rows['id']] = new DectModel($rows['id'], $rows['modele']);
+                }
+            }
+
+            return $table;
+        }
     }
 ?>

@@ -10,6 +10,12 @@
                         </a>
                     </li>
                     <li>
+                        <a class="nav-link px-2 text-truncate <?= $this->currentPage == 'dect_ordersList' ? 'active' : '' ?>" aria-current="page" href="?action=dect_ordersList">
+                            <i class="fa fa-shopping-cart fs-6"></i>
+                            <span class="d-none d-sm-inline">Liste des commandes</span>
+                        </a>
+                    </li>
+                    <li>
                         <a class="nav-link px-2 text-truncate <?= $this->currentPage == 'dect_create' ? 'active' : '' ?>" aria-current="page" href="?action=dect_create">
                             <i class="fa fa-user-plus fs-6"></i>
                             <span class="d-none d-sm-inline">Créer un DECT</span>

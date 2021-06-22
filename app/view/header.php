@@ -34,11 +34,11 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link <?= ($this->currentPage == 'dect_global' or $this->currentPage == 'dect_create') ? 'active' : '' ?>" aria-current="page" href="./?action=dect_global">Gestion DECT</a>
+                        <a class="nav-link <?= ($this->currentPage == 'dect_global' or $this->currentPage == 'dect_create' or $this->currentPage == 'dect_ordersList') ? 'active' : '' ?>" aria-current="page" href="./?action=dect_global">Gestion DECT</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link <?= $this->currentPage == 'tbt' ? 'active' : '' ?>" aria-current="page" href="./?action=tbt">Gestion TBT</a>
+                        <a class="nav-link <?= ($this->currentPage == 'tbt_global' or $this->currentPage == 'tbt_loan') ? 'active' : '' ?>" aria-current="page" href="./?action=tbt_global">Gestion TBT</a>
                     </li>
 
                     <li class='nav-item'>

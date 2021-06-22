@@ -2,6 +2,7 @@
     # Requires
     namespace App\controller;
     include_once 'vendor/autoload.php';
+    require_once 'resources/fpdf/fpdf.php';
 
     # Check if action is set, else = default
     if(isset($_GET['action'])) {
@@ -35,11 +36,27 @@
             break;
 
         # TBT Section
-        case 'tbt':
-            TbtController::getInstance()->setRenderTo('tbt');
+        case 'tbt_confirmedRestitute':
+            TbtController::getInstance()->restituteKey($_GET['loan_id']);
+            break;
+
+        case 'tbt_loan':
+            TbtController::getInstance()->setRenderTo('tbt_loan');
+            break;
+
+        case 'tbt_global':
+            TbtController::getInstance()->setRenderTo('tbt_global');
             break;
 
         # DECT Section
+        case 'dect_clearOrders':
+            DectController::getInstance('')->clearOrders();
+            break;
+
+        case 'dect_ordersList':
+            DectController::getInstance('')->setRenderTo('dect_ordersList');
+            break;
+
         case 'dect_delete':
             DectController::getInstance('')->dectCheckDelete($_GET['numserie']);
             break;

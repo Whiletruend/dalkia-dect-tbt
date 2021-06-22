@@ -5,7 +5,7 @@
         <?php
             use App\controller\DectController;
             use App\controller\UserController;
-use App\model\Dect;
+            use App\model\Dect;
 
 if($this->msg_type != '') {
         ?>
@@ -392,7 +392,7 @@ if($this->msg_type != '') {
             </div>
         </div>
 
-        <!-- DECT delete modal -->
+        <!-- DECT intervention modal -->
         <div class="modal fade" tabindex="-1" id='dectIntervention_modal' aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -403,18 +403,75 @@ if($this->msg_type != '') {
                     </div>
 
                     <div class="modal-body">
+                    <form method='POST'>
                         <div class='container'>
-                            <div class="row">
-                                <div class="col-12">
-                                    <h6>{{intervention}}</h6>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-floating">
+                                            <input class="form-control" value="<?= date('H:i:s'); ?>" type="text" name='hour_DECT__inter' readonly>
+                                            <label for="floatingInput">Heure</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <?php
+                                            $month = getdate()['mon'];
+                                            $day = getdate()['mday'];
+
+                                            if($month < 10) {
+                                                $month = '0' . getdate()['mon'];
+                                            }
+
+                                            if($day < 10) {
+                                                $day = '0' . getdate()['mday'];
+                                            }
+                                        ?>
+
+                                        <div class="form-floating">
+                                            <input class="form-control" value="<?= getdate()['year'] . '-' . $month . '-' . $day; ?>" type="text" name='date_DECT__inter' readonly>
+                                            <label for="floatingInput">Date</label>
+                                        </div>
+                                    </div>
+                                    <div class='p-2'></div>                           
+                                    <div class="col-12">
+                                        <?php $dect_Failures = DectController::getInstance('')->getEveryDectFailures(); ?>
+                                        <div class="form-floating">
+                                            <select class="form-select" name='failure_DECT__inter' >
+                                                <?php foreach($dect_Failures as $key => $val) { ?>
+                                                    <option value='<?=$val->getID();?>'><?= $val->getType(); ?></option>
+                                                <?php } ?>
+                                            </select>
+
+                                            <label for="floatingInput">Type de panne</label>
+                                        </div>
+                                    </div>
+                                    <div class='p-2'></div>
+                                    <div class="col-6">
+                                        <div class="form-floating">
+                                            <input type="text" style='text-transform: uppercase;' class="form-control" name='newnumserie_DECT__inter' id="newnumserie_DECT__inter">
+                                            <label for="floatingInput" required>Nouveau N° Série</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <?php $dect_Models = DectController::getInstance('')->getEveryDectModels(); ?>
+                                        <div class="form-floating">
+                                            <select class="form-select" name='newtype_DECT__inter' >
+                                                <?php foreach($dect_Models as $key => $val) { ?>
+                                                    <option value='<?=$val->getID();?>'><?= $val->getModele(); ?></option>
+                                                <?php } ?>
+                                            </select>
+
+                                            <label for="floatingInput">Nouveau modèle</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="modal-footer">
-                        <a href='./?action=dect_global' class="btn btn-primary">Bouton</a>
-                    </div>
+                        <div class="modal-footer">
+                            <a href='<?= DectController::getInstance('')->isSearching($dect->getEmbauche()) . '&numserie=' . $dect->getNumSerie(); ?>' class="btn btn-outline-secondary">Retour</a>
+                            <button type='submit' class='btn btn-primary'>Confirmer l'intervention</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
